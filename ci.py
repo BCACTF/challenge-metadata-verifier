@@ -5,7 +5,9 @@ from termcolor import cprint
 if __name__ == "__main__":
     failed = False
     files = 0
-    for path in Path(".").glob("*/chall.yaml"):
+    paths = list(Path(".").glob("*/chall.yaml"))
+    paths.extend(Path(".").glob("*/chall.yml"))
+    for path in paths:
         files += 1
         try:
             errors, warnings = check(path)
