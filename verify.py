@@ -63,17 +63,17 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
                 filename = str(i + 1)
                 if isinstance(file, dict):
                     if "src" not in file:
-                        errors.append('File %s: Property "src" is missing' % filename)
+                        errors.append(f"File {filename}: Property \"src\" is missing")
                     elif not isinstance(file["src"], str):
-                        errors.append('File %s: Property "src" must be a string' % filename)
+                        errors.append(f"File {filename}: Property \"src\" must be a string")
                     else:
                         filename = f"\"{file['src'].encode('utf8').decode('unicode_escape')}\""
                         if "ignore_missing" not in file and not (dir / file["src"]).exists():
-                            errors.append('File %s: Does not exist' % filename)
+                            errors.append(f'File {filename}: Does not exist')
                     if "name" in file and not isinstance(file["name"], str):
-                        errors.append('File %s: Property "name" must be a string' % filename)
+                        errors.append(f'File {filename}: Property "name" must be a string')
                 else:
-                    errors.append('File %s: Must be a dictionary' % filename)
+                    errors.append(f'File {filename}: Must be a dictionary')
         else:
             errors.append('Property "files" must be a list of strings')
     
@@ -107,12 +107,12 @@ if __name__ == "__main__":
         exit(1)
 
     if len(errors) > 0:
-        cprint("%d error(s) found" % len(errors), "red", attrs=["bold"])
+        cprint(f"{len(errors)} error(s) found", "red", attrs=["bold"])
         for error in errors:
             print(error)
     
     if len(warnings) > 0:
-        cprint("%d warning(s) found" % len(warnings), "yellow", attrs=["bold"])
+        cprint(f"{len(warnings)} warning(s) found", "yellow", attrs=["bold"])
         for warning in warnings:
             print(warning)
     
