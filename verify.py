@@ -38,10 +38,10 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
             errors.append('Property "flag" must either be a string or a dictionary containing the "file" property')
         elif not isinstance(data["flag"]["file"], str):
             errors.append('Property "flag.file" must be a string')
-        else:
+        elif "ignore_missing" not in data["flag"]:
             path = dir / data["flag"]["file"]
             if not path.exists():
-                warnings.append('Flag file does not exist')
+                errors.append('Flag file does not exist')
             elif path.is_dir():
                 errors.append('Flag file must be a file, not a directory')
     elif not isinstance(data["flag"], str):
@@ -68,8 +68,8 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
                         errors.append('File %s: Property "src" must be a string' % filename)
                     else:
                         filename = f"\"{file['src'].encode('utf8').decode('unicode_escape')}\""
-                        if not (dir / file["src"]).exists():
-                            warnings.append('File %s: Does not exist' % filename)
+                        if "ignore_missing" not in file and not (dir / file["src"]).exists():
+                            errors.append('File %s: Does not exist' % filename)
                     if "name" in file and not isinstance(file["name"], str):
                         errors.append('File %s: Property "name" must be a string' % filename)
                 else:
