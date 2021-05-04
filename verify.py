@@ -41,9 +41,9 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
         elif "ignore_missing" not in data["flag"]:
             path = dir / data["flag"]["file"]
             if not path.exists():
-                errors.append('Flag file does not exist')
+                errors.append('Flag file does not exist. If this is intended, add "ignore_missing: true" to the file in chall.yaml.')
             elif path.is_dir():
-                errors.append('Flag file must be a file, not a directory')
+                errors.append('Flag file must be a file, not a directory. If this is intended, add "ignore_missing: true" to the file in chall.yaml.')
     elif not isinstance(data["flag"], str):
         errors.append('Property "flag" must either be a string or a dictionary containing the "file" property')
     
@@ -69,7 +69,7 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
                     else:
                         filename = f"\"{file['src'].encode('utf8').decode('unicode_escape')}\""
                         if "ignore_missing" not in file and not (dir / file["src"]).exists():
-                            errors.append(f'File {filename}: Does not exist')
+                            errors.append(f'File {filename}: Does not exist. If this is intended, add "ignore_missing: true" to the file in chall.yaml.')
                     if "name" in file and not isinstance(file["name"], str):
                         errors.append(f'File {filename}: Property "name" must be a string')
                 else:
