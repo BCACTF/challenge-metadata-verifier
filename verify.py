@@ -53,9 +53,9 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
     if "hints" in data:
         if isinstance(data["hints"], list):
             if any(not isinstance(hint, str) for hint in data["hints"]):
-                errors.append('Property "hints" must be a list of strings')
+                errors.append('Property "hints" must be a list of strings if it exists')
         else:
-            errors.append('Property "hints" must be a list of strings')
+            errors.append('Property "hints" must be a list of strings if it exists')
     
     if "files" in data:
         if isinstance(data["files"], list):
