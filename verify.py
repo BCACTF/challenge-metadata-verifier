@@ -32,6 +32,18 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
             if category not in ("misc", "binex", "crypto", "foren", "rev", "webex"):
                 errors.append(f'Invalid value for {category}')
 
+    if "tags" in data:
+        if isinstance(data["tags"], list):
+            if len(data["tags"]) != len(set(data["tags"])):
+                errors.append('Property "tags" contains duplicate items')
+            if len(set(data["tags"]) & set(data["categories"])) > 0:
+                errors.append('Properties "categories" and "tags" contain duplicate items')
+            for tag in data["tags"]:
+                if not isinstance(tag, str):
+                    errors.append(f'Tag {tag} must be a string')
+        else:
+            errors.append('Property "tags" must be a list')
+
     if "value" not in data:
         errors.append('Property "value" is missing')
     elif not isinstance(data["value"], int):
