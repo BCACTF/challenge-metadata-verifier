@@ -85,8 +85,18 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
                         errors.append(f"Deployment {name}: Property \"build\" must be a string")
                     if "environment" in deploy and not isinstance(deploy["environment"], dict):
                         errors.append(f"Deployment {name}: Property \"environment\" must be a dictionary")
-                    if "expose" in deploy and not isinstance(deploy["expose"], int):
-                        errors.append(f"Deployment {name}: Property \"expose\" must be an integer")
+                    if "expose" in deploy and not isinstance(deploy["expose"], str):
+                        errors.append(f"Deployment {name}: Property \"expose\" must be a string")
+                    elif "expose" in deploy:
+                        xp = deploy["expose"]
+                        xp = xp.split("/")
+                        try:
+                            int(xp[0])
+                            
+                            if xp[1] != "tcp" and xp[1] != "udp":
+                                errors.append(f"Deployment {name}: Property \"expose\" must be a string in the format (port number)/(tcp|udp)")
+                        except e:
+                            errors.append(f"Deployment {name}: Property \"expose\" must be a string in the format (port number)/(tcp|udp)")
                 else:
                     errors.append(f"Deployment {name}: Must be a dictionary")
         else:
