@@ -71,13 +71,17 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
     if "hints" in data:
         if isinstance(data["hints"], list):
             if any(not isinstance(hint, str) for hint in data["hints"]):
-                errors.append('Property "hints" must be a list of strings if it exists')
+                errors.append('Property "hints" must be a list of strings')
         else:
-            errors.append('Property "hints" must be a list of strings if it exists')
+            errors.append('Property "hints" must be a list of strings')
+    else: 
+        errors.append('Property "hints" is missing. Consider adding a blank list if there are no hints')
 
     if "deploy" in data:
         if isinstance(data["deploy"], dict):
             for name, deploy in data["deploy"].items():
+                if name not in {"web", "nc", "static"}:
+                    errors.append(f"Deployment {name}: Invalid deployment type")
                 if isinstance(deploy, dict):
                     if "build" not in deploy:
                         errors.append(f"Deployment {name}: Property \"build\" is missing")
