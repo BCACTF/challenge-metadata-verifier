@@ -29,7 +29,7 @@ def check(path: str) -> "Tuple[list[str], list[str]]":
         if len(data["categories"]) != len(set(data["categories"])):
             errors.append('Property "categories" contains duplicate items')
         for category in data["categories"]:
-            if category not in ("misc", "binex", "crypto", "foren", "rev", "webex"):
+            if category not in ("misc", "binex", "crypto", "foren", "rev", "webex", "algo"):
                 errors.append(f'Invalid value for {category}')
 
     if "tags" in data:
